@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.todolist.todolist.entity.Membro;
-import br.com.todolist.todolist.entity.Prioridade;
 import br.com.todolist.todolist.entity.Tarefa;
+import br.com.todolist.todolist.exception.TarefaNaoEncontradaException;
 import br.com.todolist.todolist.exception.UsuarioNaoEncontradoException;
 import br.com.todolist.todolist.repository.TarefaRepository;
 
@@ -27,5 +27,13 @@ public class TarefaService {
         Membro criador = membroService.encontraMembroPorId(criador_id);
         tarefa.setCriador(criador);
         return tarefaRepository.save(tarefa);
+    }
+
+    public Tarefa alterar(Tarefa novaTarefa, Long tarefaId) throws TarefaNaoEncontradaException {
+        Tarefa tarefa = tarefaRepository.findById(tarefaId).orElseThrow(() -> new TarefaNaoEncontradaException(tarefaId));
+        tarefa.setNome(novaTarefa.getNome());
+        tarefa.setDescricao(novaTarefa.getDescricao());
+        tarefa.setPrioridade(novaTarefa.getPrioridade());
+        return tarefaRepository.saveAndFlush(tarefa);
     }
 }

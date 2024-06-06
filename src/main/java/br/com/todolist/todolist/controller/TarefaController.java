@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.todolist.todolist.entity.Tarefa;
+import br.com.todolist.todolist.exception.TarefaNaoEncontradaException;
 import br.com.todolist.todolist.exception.UsuarioNaoEncontradoException;
 import br.com.todolist.todolist.service.TarefaService;
 import jakarta.validation.Valid;
@@ -41,6 +43,18 @@ public class TarefaController {
         try {
             return new ResponseEntity<Tarefa>(tarefaService.salvar(tarefa, id), HttpStatus.CREATED);
         } catch (UsuarioNaoEncontradoException e) {
+            Map<String, String> resposta = new HashMap<>();
+            resposta.put("erro", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
+        }
+    }
+
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<?> alterarTarefa(@RequestBody @Valid Tarefa tarefa, @PathVariable Long id)
+    throws TarefaNaoEncontradaException {
+        try {
+            return new ResponseEntity<Tarefa>(tarefaService.alterar(tarefa, id), HttpStatus.OK);
+        } catch (TarefaNaoEncontradaException e) {
             Map<String, String> resposta = new HashMap<>();
             resposta.put("erro", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
