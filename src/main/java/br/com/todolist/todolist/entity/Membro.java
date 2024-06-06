@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
