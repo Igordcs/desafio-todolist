@@ -34,6 +34,14 @@ public class TarefaService {
         tarefa.setNome(novaTarefa.getNome());
         tarefa.setDescricao(novaTarefa.getDescricao());
         tarefa.setPrioridade(novaTarefa.getPrioridade());
+        tarefa.setDataTermino(novaTarefa.getDataTermino());
+        tarefa.setFinalizada(novaTarefa.getFinalizada());
         return tarefaRepository.saveAndFlush(tarefa);
+    }
+
+    public Tarefa deletar(Long tarefaId) throws TarefaNaoEncontradaException {
+        Tarefa tarefa = tarefaRepository.findById(tarefaId).orElseThrow(() -> new TarefaNaoEncontradaException(tarefaId));
+        tarefaRepository.deleteById(tarefaId);
+        return tarefa;
     }
 }

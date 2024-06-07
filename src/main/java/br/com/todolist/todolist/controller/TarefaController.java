@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +55,18 @@ public class TarefaController {
     throws TarefaNaoEncontradaException {
         try {
             return new ResponseEntity<Tarefa>(tarefaService.alterar(tarefa, id), HttpStatus.OK);
+        } catch (TarefaNaoEncontradaException e) {
+            Map<String, String> resposta = new HashMap<>();
+            resposta.put("erro", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
+        }
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<?> deletarTarefa(@PathVariable Long id)
+    throws TarefaNaoEncontradaException {
+        try {
+            return new ResponseEntity<Tarefa>(tarefaService.deletar(id), HttpStatus.OK);
         } catch (TarefaNaoEncontradaException e) {
             Map<String, String> resposta = new HashMap<>();
             resposta.put("erro", e.getMessage());
