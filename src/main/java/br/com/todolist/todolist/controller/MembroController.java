@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.todolist.todolist.entity.Membro;
+import br.com.todolist.todolist.exception.MembroJaCadastradoException;
 import br.com.todolist.todolist.service.MembroService;
 import jakarta.validation.Valid;
 
@@ -28,8 +29,14 @@ public class MembroController {
     private MembroService membroService;
 
     @PostMapping("")
-    public ResponseEntity<?> salvarMembro(@RequestBody @Valid Membro membro) {
-        return new ResponseEntity<Membro>(membroService.salvar(membro), HttpStatus.CREATED);
+    public ResponseEntity<?> salvarMembro(@RequestBody @Valid Membro membro) throws MembroJaCadastradoException {
+        try {
+            return new ResponseEntity<Membro>(membroService.salvar(membro), HttpStatus.CREATED);
+        } catch (Exception e) {
+            Map<String, String> resposta = new HashMap<>();
+            resposta.put("erro", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
+        }
     }
 
     @GetMapping("login")
