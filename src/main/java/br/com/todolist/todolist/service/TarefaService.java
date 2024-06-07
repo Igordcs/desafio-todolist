@@ -1,5 +1,6 @@
 package br.com.todolist.todolist.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,10 @@ public class TarefaService {
         return tarefa;
     }
 
-    public Tarefa finalizar(Long tarefeId) throws TarefaNaoEncontradaException {
-        Tarefa tarefa = tarefaRepository.findById(tarefeId).orElseThrow(() -> new TarefaNaoEncontradaException(tarefeId));
+    public Tarefa finalizar(Long tarefaId) throws TarefaNaoEncontradaException {
+        Tarefa tarefa = tarefaRepository.findById(tarefaId).orElseThrow(() -> new TarefaNaoEncontradaException(tarefaId));
         tarefa.setFinalizada(true);
+        tarefa.setDataTermino(new Date());
         return tarefaRepository.saveAndFlush(tarefa);
     }
 }

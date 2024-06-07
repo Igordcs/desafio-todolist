@@ -5,7 +5,7 @@ public class TarefaNaoEncontradaException extends ObjetoNaoEncontradoException {
     private final Long id;    
 
     public TarefaNaoEncontradaException(Long id) {
-        super("Membro");
+        super("Tarefa");
         this.id = id;
     }
 
