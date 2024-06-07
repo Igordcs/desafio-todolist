@@ -66,3 +66,14 @@ Back-end para a atividade de criação de uma "Lista de Tarefas".
 | :---------- | :--------- | :------------------------------------------ |
 | `id`      | `integer` | **Obrigatório**. Id da tarefa |
 
+#### Retorna a tarefa com o atributo `dataTermino` e `Finalizada` modificados
+
+```http
+  PUT /api/tarefa/finalizar/{id}
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `id`      | `integer` | **Obrigatório**. Id da tarefa |
+
+
