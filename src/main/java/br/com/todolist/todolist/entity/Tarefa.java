@@ -16,7 +16,6 @@ public class Tarefa {
 
     @ManyToOne
     @JoinColumn(name = "membro_id", nullable = false)
-    @JsonIgnore
     private Membro criador;
 
     @Column(nullable = false)

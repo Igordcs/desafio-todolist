@@ -27,6 +27,7 @@ public class Membro {
     @OneToMany(mappedBy = "criador", 
                cascade = CascadeType.ALL, 
                orphanRemoval = true)
+    @JsonIgnore
     private List<Tarefa> tarefas;
 
     public Long getId() {
