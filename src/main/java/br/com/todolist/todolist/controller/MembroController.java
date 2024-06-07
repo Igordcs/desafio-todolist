@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +30,17 @@ public class MembroController {
     @PostMapping("")
     public ResponseEntity<?> salvarMembro(@RequestBody @Valid Membro membro) {
         return new ResponseEntity<Membro>(membroService.salvar(membro), HttpStatus.CREATED);
+    }
+
+    @GetMapping("login")
+    public ResponseEntity<?> loginMembro(@RequestParam("email") String email) {
+        try {
+            return new ResponseEntity<Membro>(membroService.encontraMembroPorEmail(email), HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, String> resposta = new HashMap<>();
+            resposta.put("erro", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
+        }
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

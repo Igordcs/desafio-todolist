@@ -74,6 +74,18 @@ public class TarefaController {
         }
     }
 
+    @PutMapping("/finalizar/{id}")
+    public ResponseEntity<?> finalizarTarefa(@PathVariable Long id)
+    throws TarefaNaoEncontradaException {
+        try {
+            return new ResponseEntity<Tarefa>(tarefaService.finalizar(id), HttpStatus.OK);
+        } catch (TarefaNaoEncontradaException e) {
+            Map<String, String> resposta = new HashMap<>();
+            resposta.put("erro", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
+        }
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException manve) {

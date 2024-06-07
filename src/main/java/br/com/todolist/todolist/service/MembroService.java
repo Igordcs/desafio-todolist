@@ -19,4 +19,8 @@ public class MembroService {
     public Membro encontraMembroPorId(Long id) throws UsuarioNaoEncontradoException {
         return membroRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException(id));
     }
+
+    public Membro encontraMembroPorEmail(String email) throws UsuarioNaoEncontradoException {
+        return membroRepository.findByEmail(email).orElseThrow(() -> new UsuarioNaoEncontradoException(email));
+    }
 }
